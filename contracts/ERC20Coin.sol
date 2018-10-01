@@ -21,7 +21,7 @@ contract ERC20Coin
      *
      * Initializes contract with initial supply tokens to the creator of the contract
      */
-    function ERC20Coin(
+    constructor(
         string _name,
         string _symbol,
         uint8 _decimals,
@@ -37,13 +37,13 @@ contract ERC20Coin
 
     /// @notice Query balance for an account
     /// @param _owner The address to query
-    function balanceOf(address _owner) public returns (uint256) {
+    function balanceOf(address _owner) public view returns (uint256) {
         return balances[_owner];
     }
 
     /// @notice Mint valueInmCoin Coin and add it to the owners account
     /// @param valueInmCoin The ERC20Coin value to mint
-    function mint(uint256 valueInmCoin) {
+    function mint(uint256 valueInmCoin) public {
         require(msg.sender == owner);
         balances[owner] += valueInmCoin;
         totalSupply += valueInmCoin;
@@ -54,10 +54,10 @@ contract ERC20Coin
     /// @dev This should be the documentation of the function for the developer docs
     /// @param to The address of the recipient of the ERC20Coin
     /// @param valueInmCoin The ERC20Coin value to send
-    function transfer(address to, uint256 valueInmCoin) {
+    function transfer(address to, uint256 valueInmCoin) public {
         require(balances[msg.sender] >= valueInmCoin);
         balances[to] += valueInmCoin;
         balances[msg.sender] -= valueInmCoin;
-        Transfer(msg.sender, to, valueInmCoin);
+        emit Transfer(msg.sender, to, valueInmCoin);
     }
 }
